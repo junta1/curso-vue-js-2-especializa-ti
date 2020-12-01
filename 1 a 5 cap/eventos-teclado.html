@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Eventos Teclado Vue Js</title>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+</head>
+
+<body>
+    <div id="app">
+
+        <input type="text" 
+        @keyup.tab="changeValue"
+        @keyup.up="changeValueTwo"
+        @keyup="getCodeKey">
+
+        {{valueText}}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data:{
+                valueText: '',
+            },
+            methods: {
+                changeValue(event){
+                    this.valueText = event.target.value;
+                },
+                changeValueTwo(){
+                    alert('olokinho');
+                },
+                getCodeKey(event){
+                    console.log(event.keycode);
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

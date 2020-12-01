@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vue Js</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+
+  <body>
+    <div id="app">
+      <div v-if="number < 12">{{text}}</div>
+      <div v-else-if="number == 12">É igual</div>
+      <div v-else>É diferente</div>
+
+      <div v-if="isActive">Ativo</div>
+      <div v-else="isActive">Não Ativo</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <script>
+      new Vue({
+        el: '#app',
+        data: {
+          number: 12,
+          text: 'Especializati + Vue',
+          isActive: false,
+        },
+      });
+    </script>
+  </body>
+</html>

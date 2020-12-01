@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Events Vue Js</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+
+  <body>
+    <!-- v-on e @ são iguais -->
+    <div id="app">
+      <input type="text" v-on:keyup="count++" />
+      <br />
+      <button @click="count++">Incrementar</button>
+      {{count}}
+      <button @click="count--">Decrementar</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <script>
+      new Vue({
+        el: '#app',
+        data: {
+          title: 'Especializati + Vue',
+          count: 0,
+        },
+      });
+    </script>
+  </body>
+</html>

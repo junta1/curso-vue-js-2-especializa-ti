@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Eventos com parâmetros Vue Js</title>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" @keyup="changeInput">
+        <button @click="changeInputTwo(2)">Incrementar 2</button>
+        <input type="text" @keyup="changeInputThree(2, $event)">
+        <p>{{count}}</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data:{
+                title: 'Especializati + Vue',
+                count: 0,
+            },
+
+            methods:{
+                changeInput: function(event){
+                    console.log(event.target.value);
+                },
+                changeInputTwo: function(value){
+                    this.count += value;
+                },
+                changeInputThree(value, event){
+                    // console.log(event.target.value);
+                    value += parseInt(event.target.value);
+                    this.count += value;
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
+
+</html>

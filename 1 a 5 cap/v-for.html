@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>V-for Vue Js</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+
+  <body>
+    <div id="app">
+      <ul>
+        <li v-for="i in 10">{{ i }}</li>
+      </ul>
+      <hr>
+      <ul>
+        <li v-for="product in products">{{product}}</li>
+      </ul>
+      <hr>
+      <ul>
+        <li v-for="(task, index) in tasks">{{index}} -> {{task.name}}</li>
+      </ul>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <script>
+      new Vue({
+        el: '#app',
+        data: {
+          products: [
+            'tv', 'geladeira', 'microondas', 'radio'
+          ],
+          tasks: [
+            {id: 1, name: 'Lava louça'},
+            {id: 2, name: 'Lava carro'},
+            {id: 3, name: 'Lava moto'},
+            {id: 4, name: 'Lava casa'},
+          ]
+        },
+      });
+    </script>
+  </body>
+</html>
