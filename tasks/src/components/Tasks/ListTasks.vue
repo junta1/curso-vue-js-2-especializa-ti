@@ -1,11 +1,21 @@
 <template>
   <div>
-    <h2>{{title}}</h2>
+    <h2>{{ title }}</h2>
 
-<form class="form form-inline" @submit.prevent="onSubmit()">
-    <input type="text" name="" id="" class="form-control" placeholder="Nome" v-model="task.name">
-    <button type="submit" class="btn btn-primary">Enviar</button>
-</form>
+    <div class="row">
+      <div class="col">
+          <form class="form form-inline">
+            <input type="text" class="form-control" placeholder="Encontrar" v-model="filter">
+          </form>
+      </div>
+
+      <div class="col">
+          <form class="form form-inline" @submit.prevent="onSubmit()">
+            <input type="text" name="" id="" class="form-control" placeholder="Nome" v-model="task.name"/>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+          </form>
+      </div>
+    </div>
 
     <table class="table table-dark">
       <thead>
@@ -15,13 +25,13 @@
           <th with="150px">Ações</th>
         </tr>
       </thead>
-      <tbody v-for="(task, index) in tasks" :key="index">
+      <tbody v-for="(task, index) in filteredItems" :key="index">
         <tr>
-          <td>{{task.id}}</td>
-          <td>{{task.name }}</td>
+          <td>{{ task.id }}</td>
+          <td>{{ task.name }}</td>
           <td>
-            <a href="#" @click.prevent="edit(index)" class="btn btn-info">Editar</a>
-            <a href="" class="btn btn-danger">Deletar</a>
+            <a href="#" @click.prevent="edit(task.id)" class="btn btn-info">Editar</a>
+            <a href="" @click.prevent="deleteTask(task.id)" class="btn btn-danger">Deletar</a>
           </td>
         </tr>
       </tbody>
@@ -31,54 +41,76 @@
 
 <script>
 export default {
-  data(){
+  data() {
     return {
-      title: 'Lista de Tarefas',
+      title: "Lista de Tarefas",
       tasks: [],
-      task:
-        {
-        id: '',
-        name: ''
-        },
+      task: {
+        id: "",
+        name: "",
+      },
       updating: false,
-      updatingIndex: ''
-    }
+      updatingIndex: "",
+      filter: '',
+    };
   },
-  methods:{
-    onSubmit(){
-      if(this.updating){
+  methods: {
+    onSubmit() {
+      if (this.updating) {
         return this.update();
       }
-      return this.save()
+      return this.save();
     },
-    save(){
-      this.task.id = this.tasks.length + 1;      
+    save() {
+      this.task.id = this.tasks.length + 1;
       this.tasks.push(this.task);
-      this.clearForm();      
-
+      this.clearForm();
     },
-    edit(index){
-      this.task = this.tasks[index];
+    edit(id) {
+      this.updatingIndex = this.findIndexItem(id);
 
-      this.updatingIndex = index;
+      this.task = this.tasks[this.updatingIndex];
 
       this.updating = true;
     },
-    update(){
+    update() {
       this.tasks[this.updatingIndex] = this.task;
       this.updating = false;
-      this.clearForm();      
+      this.clearForm();
     },
-    clearForm(){
+    clearForm() {
       this.task = {
-          id: '',
-          name: ''
+        id: "",
+        name: "",
+      };
+    },
+    deleteTask(id) {
+      let index = this.findIndexItem(id);
+      this.tasks.splice(index, 1);
+    },
+    findIndexItem(id){
+      for(let index = 0; index < this.tasks.length; index++){
+        if(this.tasks[index].id === id){
+          return index;
         }
+      }
     }
-  }
-}
+  },
+  computed: {
+      filteredItems(){
+        if(this.filter === ''){
+            return this.tasks;
+        }
+
+        let vm =  this;
+
+        return this.tasks.filter(task=> {
+          return task.name.toLowerCase().indexOf(vm.filter.toLowerCase()) > - 1;
+        });
+      }
+    }
+};
 </script>
 
 <style scoped>
-  
 </style>
