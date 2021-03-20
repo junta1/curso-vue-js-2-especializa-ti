@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="container">
     <router-link to="/">Home</router-link>
     <router-link to="/product">Produtos</router-link>
 
@@ -18,5 +18,7 @@ export default {
 </script>
 
 <style>
-
+.preloader{
+  max-width: 80px;
+}
 </style>
