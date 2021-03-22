@@ -24,6 +24,16 @@
       </tbody>
     </table>
 
+    <pagination-component :pagination="products" @paginate="getProducts"></pagination-component>
+    //- <ul class="pagination">
+    //-   <li v-if="products.current_page - 1 >= 1" class="page-item">
+    //-     <a href="#" class="page-link" @click.prevent="pagination(products.current_page - 1)">Voltar</a>
+    //-   </li>
+    //-   <li v-if="products.current_page < products.last_page" class="page-item">
+    //-     <a href="#" class="page-link" @click.prevent="pagination(products.current_page + 1)">Pŕoxima página</a>
+    //-   </li>
+    //- </ul>
+
     <div v-if="preloader">
       <img src="../../assets/preloader.gif" alt="preloader" class="preloader">
     </div>
@@ -32,12 +42,14 @@
 </template>
 
 <script>
+import PaginationComponent from '../general/PaginationComponent'
+
 export default {
   data() {
     return {
       title: 'Lista de produtos',
       products: {},
-      preloader: false
+      preloader: false,
     }
   },
   created() {
@@ -47,14 +59,22 @@ export default {
     getProducts(){
       this.preloader = true
 
-      this.$http.get('http://localhost:8000/api/v1/products')
+      this.$http.get(`http://localhost:8000/api/v1/products?page=${this.products.current_page}`)
       .then(response => {
         this.products = response.body
         console.log(this.products)
       },error =>{
         console.log(error)
       }).finally(() => this.preloader = false)
+    },
+    pagination(pageNumber){
+      this.products.current_page = pageNumber
+
+      this.getProducts()
     }
+  },
+  components:{
+    PaginationComponent
   }
 }
 </script>
