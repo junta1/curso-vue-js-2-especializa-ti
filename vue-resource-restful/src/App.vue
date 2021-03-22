@@ -2,6 +2,7 @@
   <div id="app" class="container">
     <router-link to="/">Home</router-link>
     <router-link to="/product">Produtos</router-link>
+    <router-link to="/product/create">Novo produto</router-link>
 
     <router-view></router-view>
   </div>
