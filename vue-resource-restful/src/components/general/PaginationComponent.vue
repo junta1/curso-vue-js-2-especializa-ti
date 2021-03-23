@@ -17,6 +17,13 @@
           <span aria-hidden="true">»</span>
         </a>
       </li>
+
+      <li v-if="pagination.total">
+          <a href="#" class="page-link" >
+            <span aria-hidden="true">Total: {{pagination.total}}</span>
+          </a>
+      </li>
+      
     </ul>
 </template>
 
