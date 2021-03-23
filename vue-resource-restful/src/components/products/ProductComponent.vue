@@ -3,7 +3,13 @@
     <h1>{{title}}</h1>
 
     <router-link to="/product/create" class="btn btn-info btn-crea" >Cadastrar Produto</router-link>
-
+    
+    <div class="alert alert-danger text-center" v-if="confirmDeleteAlert">
+      <h2>Deseja realmente deletar?</h2>
+        <hr>
+      <button class="btn btn-danger" @click.prevent="deleteProduct">Deletar Agora</button>
+    </div>
+    
     <table class="table table-dark">
       <thead>
         <tr>
@@ -19,32 +25,21 @@
           <td>{{product.name}}</td>
           <td>{{product.description}}</td>
           <td>
-            <a href="#" class="btn btn-info">Editar</a>
-            <a href="#" class="btn btn-danger">Deletar</a>
+            <router-link :to="{name: 'product.edit', params: {id: product.id}}" class="btn btn-info">Editar</router-link> 
+            <a href="#" @click.prevent="confirmDelete(product.id)" class="btn btn-danger" >Deletar</a>
           </td>
         </tr>
       </tbody>
     </table>
 
     <pagination-component :pagination="products" @paginate="getProducts"></pagination-component>
-    //- <ul class="pagination">
-    //-   <li v-if="products.current_page - 1 >= 1" class="page-item">
-    //-     <a href="#" class="page-link" @click.prevent="pagination(products.current_page - 1)">Voltar</a>
-    //-   </li>
-    //-   <li v-if="products.current_page < products.last_page" class="page-item">
-    //-     <a href="#" class="page-link" @click.prevent="pagination(products.current_page + 1)">Pŕoxima página</a>
-    //-   </li>
-    //- </ul>
-
-    <div v-if="preloader">
-      <img src="../../assets/preloader.gif" alt="preloader" class="preloader">
-    </div>
-
+    <preloader-component :preloader="preloader"></preloader-component>
   </div>
 </template>
 
 <script>
 import PaginationComponent from '../general/PaginationComponent'
+import PreloaderComponent from '../general/PreloaderComponent'
 
 export default {
   data() {
@@ -52,6 +47,8 @@ export default {
       title: 'Lista de produtos',
       products: {},
       preloader: false,
+      confirmDeleteAlert: false,
+      idProductDelete: 0
     }
   },
   created() {
@@ -69,14 +66,28 @@ export default {
         console.log(error)
       }).finally(() => this.preloader = false)
     },
-    pagination(pageNumber){
-      this.products.current_page = pageNumber
+    deleteProduct(){
+      this.preloader = true
 
-      this.getProducts()
+      this.$http.delete(`http://localhost:8000/api/v1/products/${this.idProductDelete}`)
+      .then(response => {
+        this.getProducts();
+      },error =>{
+        console.log(error)
+      }).finally(() => {
+        this.preloader = false,
+        this.confirmDeleteAlert = false;
+        })
+    },
+    confirmDelete(id){
+      this.confirmDeleteAlert = true;
+
+      this.idProductDelete = id;
     }
   },
   components:{
-    PaginationComponent
+    PaginationComponent,
+    PreloaderComponent
   }
 }
 </script>

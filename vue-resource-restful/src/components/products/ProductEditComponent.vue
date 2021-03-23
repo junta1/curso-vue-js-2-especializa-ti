@@ -2,9 +2,9 @@
   <div>
     <h1>{{ title }}</h1>
 
-    <form @submit.prevent="createProduct">
+    <form @submit.prevent="updateProduct">
       <div class="form-group" :class="{'has-warning': errorsValidation}">
-        <input type="text" class="form-control" placeholder="Nome:" v-model="product.name"/>
+        <input type="text" class="form-control" placeholder="Nome:" v-model="product.name" />
         
         <div v-if="errorsValidation.name">
           <p v-for="(error, index) in errorsValidation.name" :key="index" v-text="error"></p>
@@ -19,7 +19,7 @@
       </div>
 
       <div>
-        <button type="submit" class="btn btn-primary">Cadastrar</button>
+        <button type="submit" class="btn btn-primary">Editar</button>
       </div>
     </form>
 
@@ -30,11 +30,16 @@
 
 <script>
 import PreloaderComponent from '../general/PreloaderComponent'
-
 export default {
+  props:{
+    id:{
+      required: true,
+      default: ''
+    }
+  },
   data() {
     return {
-      title: "Cadastrar novo produto",
+      title: "Editar produto",
       product: {
         name: "",
         description: "",
@@ -43,11 +48,30 @@ export default {
       preloader: false
     };
   },
+  created() {
+    this.getProduct();
+  },
   methods: {
-    createProduct() {
+    getProduct(){
+      this.preloader = true;
+      this.$http.get(`http://localhost:8000/api/v1/products/${this.id}`)
+        .then(response => {
+          this.product = response.body;
+          console.log(response.body);
+        },(error) => {
+            if (error.status == 404) {
+              alert('Produto não encontrado!');
+              this.$router.push('/product')
+            }
+          })
+        .finally(() => {
+          this.preloader = false
+        });
+    },
+    updateProduct() {
       this.preloader = true
       this.$http
-        .post("http://localhost:8000/api/v1/products", this.product)
+        .put(`http://localhost:8000/api/v1/products/${this.id}`, this.product)
         .then(
           (response) => {
             console.log(response.body);
@@ -63,7 +87,7 @@ export default {
         .finally(() => {
           this.preloader = false
         });
-    },
+    }
   },
   components:{
     PreloaderComponent
