@@ -2,8 +2,15 @@
   <div>
     <h1>{{title}}</h1>
 
-    <router-link to="/product/create" class="btn btn-info btn-crea" >Cadastrar Produto</router-link>
-    
+    <div class="row">
+      <div class="col">
+        <router-link to="/product/create" class="btn btn-info btn-crea" >Cadastrar Produto</router-link>
+      </div>
+
+      <div class="col">
+        <product-search-component @search="searchProduct"></product-search-component>
+      </div>
+    </div>
     <div class="alert alert-danger text-center" v-if="confirmDeleteAlert">
       <h2>Deseja realmente deletar?</h2>
         <hr>
@@ -40,6 +47,7 @@
 <script>
 import PaginationComponent from '../general/PaginationComponent'
 import PreloaderComponent from '../general/PreloaderComponent'
+import ProductSearchComponent from './ProductSearchComponent'
 
 export default {
   data() {
@@ -48,7 +56,8 @@ export default {
       products: {},
       preloader: false,
       confirmDeleteAlert: false,
-      idProductDelete: 0
+      idProductDelete: 0,
+      filter: ''
     }
   },
   created() {
@@ -58,7 +67,7 @@ export default {
     getProducts(){
       this.preloader = true
 
-      this.$http.get(`http://localhost:8000/api/v1/products?page=${this.products.current_page}`)
+      this.$http.get(`http://localhost:8000/api/v1/products?page=${this.products.current_page}&filter=${this.filter}`)
       .then(response => {
         this.products = response.body
         console.log(this.products)
@@ -83,11 +92,17 @@ export default {
       this.confirmDeleteAlert = true;
 
       this.idProductDelete = id;
+    },
+    searchProduct(filter){
+      this.filter = filter;
+
+      this.getProducts();
     }
   },
   components:{
     PaginationComponent,
-    PreloaderComponent
+    PreloaderComponent,
+    ProductSearchComponent
   }
 }
 </script>
