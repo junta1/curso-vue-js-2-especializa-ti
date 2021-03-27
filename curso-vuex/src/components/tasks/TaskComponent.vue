@@ -29,6 +29,9 @@ export default {
     getTasks() {
       return this.$store.state.tasks;
     },
+    getTasksSorted(){
+      return this.$store.getters.sortedtasks;
+    }
   },
   components:{
     TaskAddComponent
