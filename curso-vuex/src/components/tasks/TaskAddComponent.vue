@@ -18,7 +18,8 @@ export default {
   },
   methods: {
     onSubmit(){
-      this.$store.commit('ADD_TASK', this.task);
+      // this.$store.commit('ADD_TASK', this.task);
+      this.$store.dispatch('addTask', this.task);
 
       this.task = {
         name:'',
