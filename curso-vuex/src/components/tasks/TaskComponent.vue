@@ -3,7 +3,7 @@
     <h1 v-text="title"></h1>
     <ul>
       <task-add-component></task-add-component>
-      <li v-for="(task, index) in getTasks" :key="index" :class="{'completed': task.completed}">
+      <li v-for="(task, index) in getTasksSorted" :key="index" :class="{'completed': task.completed}">
         <a href="#" @click.prevent="completedTask(task)">Toogle</a>
         {{ task.name }}
       </li>
