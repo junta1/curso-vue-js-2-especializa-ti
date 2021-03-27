@@ -19,6 +19,9 @@ export default new Vuex.Store({
     },
     ADD_PRODUCT_ID(state, products){
       state.products.push(products);
+    },
+    TOOGLE_TASK(state, task){
+      task.completed = !task.completed;
     }
   }
 });
